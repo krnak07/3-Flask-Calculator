@@ -92,7 +92,7 @@
         <h1 style="top:50%" id="nums"></h1>
     </div>
     <div style="width:50%;text-align:right;float:right">
-        <h1 style="top:50%" id="summ"></h1>
+        <h1 style="top:50%" id="summ">{{ ans }}</h1>
     </div>
 </div>
 
@@ -105,8 +105,16 @@
         document.getElementById("nums").innerHTML += n;
     }
     function eval(){
-        document.getElementById("summ").innerHTML = math.evaluate(document.getElementById("nums").innerHTML);
-        document.getElementById("nums").innerHTML = '';
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("summ").innerHTML = this.response;
+            document.getElementById("nums").innerHTML = '';
+       }
+    };
+        xhttp.open("GET",'{{ url_for('evaluate') }}'+'?exp='+document.getElementById("nums").innerHTML);
+        xhttp.send(null);
+
     }
     function cl(){
         document.getElementById("summ").innerHTML = '';
